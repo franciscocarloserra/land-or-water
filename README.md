@@ -2,7 +2,7 @@
 
 **What does a language model think the Earth looks like?** Ask it "land or water?" at 16,200 points of the globe, with no images, no tools and no memory between questions, then plot the answers.
 
-| jev-latest | Gemma 4 26B-A4B (Q3_K_M) |
+| jev-latest | gemma-4-26B-A4B-it-UD-Q3_K_M |
 |---|---|
 | ![jev](screenshots/jev-latest.png) | ![gemma](screenshots/gemma-4-26B-A4B.png) |
 
@@ -20,4 +20,4 @@ python3 -m http.server 7870                # open http://localhost:7870/viewer.h
 
 The map fills in live, in random order. Runs resume where they stopped. Settings are at the top of `land_or_water.py`.
 
-`results/` has finished runs for jev-latest, Gemma 4 26B-A4B (chat, 16,200 points in 15 min on one RTX 3090, 28.9% land vs 29.2% real) and Qwen3.5-0.8B (chat).
+`results/` has finished runs for jev-latest, gemma-4-26B-A4B-it-UD-Q3_K_M (Unsloth GGUF, chat, 16,200 points in 15 min on one RTX 3090, 28.9% land vs 29.2% real) and Qwen3.5-0.8B (chat).
