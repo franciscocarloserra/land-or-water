@@ -1,0 +1,31 @@
+<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Land or Water?</title>
+<style>
+body{margin:0;background:#0d0d0f;color:#ccc;font:14px system-ui,sans-serif;display:flex;flex-direction:column;height:100vh}
+canvas{flex:1;min-height:0;width:100%;object-fit:contain;image-rendering:pixelated}
+#bar{display:flex;gap:24px;align-items:center;padding:10px 16px;background:#18181c;font-size:15px}
+#bar b{color:#fff}select{background:#222;color:#ddd;border:1px solid #444;padding:3px}
+</style>
+<canvas id=c width=720 height=360></canvas>
+<div id=bar><select id=sel><option>results/Qwen3.5-0.8B.jsonl<option>results/jev-latest.jsonl</select><span id=info></span></div>
+<script>
+// Each line after the header: {lat, lon, p, t}. p = P(land): 0/1 for chat models, a probability for jev.
+const x = c.getContext('2d'), q = new URLSearchParams(location.search)
+sel.value = q.get('f'); if (!sel.value) sel.selectedIndex = 0; sel.onchange = () => location.search = 'f=' + sel.value
+const fmt = s => s < 90 ? `${s | 0}s` : s < 5400 ? `${s / 60 | 0}m` : `${(s / 3600).toFixed(1)}h`
+async function draw() {
+  const [m, ...pts] = (await (await fetch(sel.value + '?' + Date.now())).text()).trim().split('\n').map(JSON.parse)
+  const k = c.width / 360, S = m.step; let land = 0, area = 0
+  x.fillStyle = '#23233a'; x.fillRect(0, 0, c.width, c.height)  // pending = blue-gray
+  for (const r of pts) {
+    const g = Math.round(r.p * 255), w = Math.cos(r.lat * Math.PI / 180)
+    x.fillStyle = `rgb(${g},${g},${g})`; x.fillRect((r.lon - S / 2 + 180) * k, (90 - r.lat - S / 2) * k, S * k + .5, S * k + .5)
+    land += r.p * w; area += w
+  }
+  const n = pts.length, last = pts.slice(-300), dt = n > 1 && last.at(-1).t - last[0].t
+  const eta = n >= m.total ? 'done' : dt ? fmt((m.total - n) * dt / (last.length - 1)) + ' left' : '…'
+  info.innerHTML = `<b>${m.model}</b> · ${m.backend == 'jev' ? 'P(land)' : 'Land/Water'} &nbsp; `
+    + `<b>${(100 * n / m.total).toFixed(1)}%</b> ${n}/${m.total} &nbsp; <b>${eta}</b> &nbsp; `
+    + `land <b>${(100 * land / area || 0).toFixed(1)}%</b> <span style=color:#777>(Earth ≈ 29%)</span>`
+}
+draw(); setInterval(draw, 2000)
+</script>
