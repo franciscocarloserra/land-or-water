@@ -2,7 +2,9 @@
 
 **What does a language model think the Earth looks like?** Ask it "land or water?" at 16,200 points of the globe, with no images, no tools and no memory between questions, then plot the answers.
 
-![screenshot](screenshot.png)
+| jev-latest | Qwen3.5-0.8B |
+|---|---|
+| ![jev](screenshots/jev-latest.png) | ![qwen](screenshots/Qwen3.5-0.8B.png) |
 
 - **Chat models** (any OpenAI-compatible server) answer `Land` or `Water` → a black and white map.
 - **[jev](https://typesafe.ai)** scores both options → a map of *how sure* it is (gray = unsure).
