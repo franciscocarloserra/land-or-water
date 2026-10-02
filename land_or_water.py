@@ -12,6 +12,8 @@ JEV_URL = "https://api.typesafe.ai/v1/systemone"
 STEP = 2      # grid spacing in degrees -> 90 x 180 = 16,200 points
 WORKERS = 8   # parallel requests
 SEED = 0      # shuffle order
+CACHE_PROMPT = True  # reuse the KV of the shared prompt prefix; each point is still answered independently
+MAX_TOKENS = 1       # Land/Water are single tokens for Gemma 4; raise if a model splits them
 PROMPT = "Is the point at latitude {lat}, longitude {lon} on land or water?"
 
 
@@ -19,8 +21,8 @@ def ask_chat(lat, lon):
     """Generative model, fresh context per point; the grammar only allows 'Land' or 'Water'."""
     r = requests.post(CHAT_URL + "/v1/chat/completions", json={
         "messages": [{"role": "user", "content": PROMPT.format(lat=lat, lon=lon) + " Answer with one word: Land or Water."}],
-        "grammar": 'root ::= "Land" | "Water"', "max_tokens": 4, "temperature": 0,
-        "cache_prompt": False, "chat_template_kwargs": {"enable_thinking": False}}).json()
+        "grammar": 'root ::= "Land" | "Water"', "max_tokens": MAX_TOKENS, "temperature": 0,
+        "cache_prompt": CACHE_PROMPT, "chat_template_kwargs": {"enable_thinking": False}}).json()
     return float(r["choices"][0]["message"]["content"].strip() == "Land")
 
 

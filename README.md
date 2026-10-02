@@ -2,9 +2,9 @@
 
 **What does a language model think the Earth looks like?** Ask it "land or water?" at 16,200 points of the globe, with no images, no tools and no memory between questions, then plot the answers.
 
-| jev-latest | Qwen3.5-0.8B |
+| jev-latest | Gemma 4 26B-A4B (Q3_K_M) |
 |---|---|
-| ![jev](screenshots/jev-latest.png) | ![qwen](screenshots/Qwen3.5-0.8B.png) |
+| ![jev](screenshots/jev-latest.png) | ![gemma](screenshots/gemma-4-26B-A4B.png) |
 
 - **Chat models** (any OpenAI-compatible server) answer `Land` or `Water` → a black and white map.
 - **[jev](https://typesafe.ai)** scores both options → a map of *how sure* it is (gray = unsure).
@@ -20,4 +20,4 @@ python3 -m http.server 7870                # open http://localhost:7870/viewer.h
 
 The map fills in live, in random order. Runs resume where they stopped. Settings are at the top of `land_or_water.py`.
 
-`results/` has two finished runs: Qwen3.5-0.8B (chat) and jev-latest.
+`results/` has finished runs for jev-latest, Gemma 4 26B-A4B (chat, 16,200 points in 15 min on one RTX 3090, 28.9% land vs 29.2% real) and Qwen3.5-0.8B (chat).

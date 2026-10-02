@@ -6,7 +6,7 @@ canvas{flex:1;min-height:0;width:100%;object-fit:contain;image-rendering:pixelat
 #bar b{color:#fff}select{background:#222;color:#ddd;border:1px solid #444;padding:3px}
 </style>
 <canvas id=c width=720 height=360></canvas>
-<div id=bar><select id=sel><option>results/Qwen3.5-0.8B.jsonl<option>results/jev-latest.jsonl</select><span id=info></span></div>
+<div id=bar><select id=sel><option>results/Qwen3.5-0.8B.jsonl<option>results/jev-latest.jsonl<option>results/gemma-4-26B-A4B-it-UD-Q3_K_M.jsonl</select><span id=info></span></div>
 <script>
 // Each line after the header: {lat, lon, p, t}. p = P(land): 0/1 for chat models, a probability for jev.
 const x = c.getContext('2d'), q = new URLSearchParams(location.search)
